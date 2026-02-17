@@ -8,7 +8,7 @@ import {
   calculateEmployeeSummaries,
   calculateDailySummaries,
 } from '@/lib/excel-parser';
-import { detectErrors, generateMonthlyReport } from '@/lib/claude-client';
+import { detectErrors, generateMonthlyReport } from '@/lib/gemini-client';
 import { AnalysisResult } from '@/lib/types';
 
 export async function POST(request: NextRequest) {
