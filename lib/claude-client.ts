@@ -33,7 +33,7 @@ JSON配列のみを出力してください。説明文は不要です。`;
 
   try {
     const message = await client.messages.create({
-      model: 'claude-sonnet-4-20250514',
+      model: 'claude-3-5-sonnet-latest',
       max_tokens: 4096,
       messages: [
         {
@@ -90,7 +90,7 @@ ${errors.length > 0 ? errors.map(e => `- ${e.description} (行${e.rowNumber})`).
 
   try {
     const message = await client.messages.create({
-      model: 'claude-sonnet-4-20250514',
+      model: 'claude-3-5-sonnet-latest',
       max_tokens: 2048,
       messages: [
         {
