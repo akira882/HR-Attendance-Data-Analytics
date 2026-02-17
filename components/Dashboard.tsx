@@ -16,18 +16,21 @@ import {
   MonthlySummary,
   DepartmentSummary,
   DailySummary,
+  EmployeeSummary,
 } from '@/lib/types';
 
 interface DashboardProps {
   monthlySummary: MonthlySummary;
   departmentSummaries: DepartmentSummary[];
   dailySummaries: DailySummary[];
+  employeeSummaries: EmployeeSummary[];
 }
 
 export default function Dashboard({
   monthlySummary,
   departmentSummaries,
   dailySummaries,
+  employeeSummaries,
 }: DashboardProps) {
   return (
     <div className="space-y-6">
@@ -59,69 +62,80 @@ export default function Dashboard({
       {/* グラフエリア */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* 残業時間推移グラフ */}
-        <div className="bg-white rounded-lg border border-gray-200 p-6">
-          <h3 className="text-lg font-semibold text-gray-800 mb-4">
+        <div className="bg-white rounded-lg border border-gray-200 p-6 shadow-sm">
+          <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
+            <span className="w-1 h-5 bg-blue-600 rounded-full"></span>
             残業時間の推移
           </h3>
           <ResponsiveContainer width="100%" height={300}>
             <LineChart data={dailySummaries}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
+              <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" vertical={false} />
               <XAxis
                 dataKey="date"
-                tick={{ fontSize: 12 }}
-                stroke="#6b7280"
+                tick={{ fontSize: 11, fill: '#9ca3af' }}
+                axisLine={{ stroke: '#e5e7eb' }}
+                tickLine={false}
               />
-              <YAxis tick={{ fontSize: 12 }} stroke="#6b7280" />
+              <YAxis
+                tick={{ fontSize: 11, fill: '#9ca3af' }}
+                axisLine={{ stroke: '#e5e7eb' }}
+                tickLine={false}
+              />
               <Tooltip
                 contentStyle={{
                   backgroundColor: '#fff',
-                  border: '1px solid #e5e7eb',
-                  borderRadius: '6px',
+                  border: 'none',
+                  borderRadius: '12px',
+                  boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)',
                 }}
               />
-              <Legend />
+              <Legend iconType="circle" />
               <Line
                 type="monotone"
                 dataKey="totalOvertimeHours"
                 name="残業時間"
-                stroke="#2E75B6"
-                strokeWidth={2}
-                dot={{ fill: '#2E75B6', r: 4 }}
-                activeDot={{ r: 6 }}
+                stroke="#2563eb"
+                strokeWidth={3}
+                dot={{ fill: '#2563eb', strokeWidth: 2, r: 4, stroke: '#fff' }}
+                activeDot={{ r: 6, strokeWidth: 0 }}
               />
             </LineChart>
           </ResponsiveContainer>
         </div>
 
         {/* 部署別残業ランキング */}
-        <div className="bg-white rounded-lg border border-gray-200 p-6">
-          <h3 className="text-lg font-semibold text-gray-800 mb-4">
+        <div className="bg-white rounded-lg border border-gray-200 p-6 shadow-sm">
+          <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
+            <span className="w-1 h-5 bg-indigo-600 rounded-full"></span>
             部署別残業ランキング
           </h3>
           <ResponsiveContainer width="100%" height={300}>
             <BarChart data={departmentSummaries} layout="vertical">
-              <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
-              <XAxis type="number" tick={{ fontSize: 12 }} stroke="#6b7280" />
+              <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" horizontal={false} />
+              <XAxis type="number" hide />
               <YAxis
                 type="category"
                 dataKey="department"
-                tick={{ fontSize: 12 }}
-                stroke="#6b7280"
+                tick={{ fontSize: 11, fill: '#4b5563', fontWeight: 600 }}
+                axisLine={false}
+                tickLine={false}
                 width={80}
               />
               <Tooltip
+                cursor={{ fill: '#f9fafb' }}
                 contentStyle={{
                   backgroundColor: '#fff',
-                  border: '1px solid #e5e7eb',
-                  borderRadius: '6px',
+                  border: 'none',
+                  borderRadius: '12px',
+                  boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)',
                 }}
               />
-              <Legend />
               <Bar
                 dataKey="totalOvertimeHours"
                 name="残業時間"
-                fill="#1F4E79"
-                radius={[0, 4, 4, 0]}
+                fill="#312e81"
+                radius={[0, 10, 10, 0]}
+                barSize={24}
               />
             </BarChart>
           </ResponsiveContainer>
@@ -129,47 +143,80 @@ export default function Dashboard({
       </div>
 
       {/* 部署別詳細テーブル */}
-      <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
-        <div className="px-6 py-4 border-b border-gray-200 bg-gray-50">
-          <h3 className="text-lg font-semibold text-gray-800">
-            部署別詳細データ
+      <div className="bg-white rounded-lg border border-gray-200 overflow-hidden shadow-sm">
+        <div className="px-6 py-4 border-b border-gray-200 bg-gray-50/50 flex items-center justify-between">
+          <h3 className="text-sm font-bold text-gray-900 uppercase tracking-widest flex items-center gap-2">
+            <span className="w-2 h-2 bg-blue-500 rounded-full"></span>
+            DEPARTMENTAL DETAILS
           </h3>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full">
-            <thead className="bg-gray-50 border-b border-gray-200">
+            <thead className="bg-gray-50">
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  部署
-                </th>
-                <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  社員数
-                </th>
-                <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  総残業時間
-                </th>
-                <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  平均残業時間
-                </th>
+                <th className="px-6 py-4 text-left text-[10px] font-bold text-gray-500 uppercase tracking-widest">部署</th>
+                <th className="px-6 py-4 text-right text-[10px] font-bold text-gray-500 uppercase tracking-widest">社員数</th>
+                <th className="px-6 py-4 text-right text-[10px] font-bold text-gray-500 uppercase tracking-widest">総残業</th>
+                <th className="px-6 py-4 text-right text-[10px] font-bold text-gray-500 uppercase tracking-widest">平均残業</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-200">
+            <tbody className="divide-y divide-gray-100">
               {departmentSummaries.map((dept, index) => (
-                <tr key={index} className="hover:bg-gray-50">
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                    {dept.department}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 text-right">
-                    {dept.employeeCount}名
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 text-right">
-                    {dept.totalOvertimeHours.toLocaleString()}h
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 text-right">
-                    {dept.averageOvertimeHours.toLocaleString()}h
-                  </td>
+                <tr key={index} className="hover:bg-blue-50/30 transition-colors group">
+                  <td className="px-6 py-4 whitespace-nowrap text-sm font-bold text-gray-900">{dept.department}</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600 text-right font-medium">{dept.employeeCount}名</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-right font-bold">{dept.totalOvertimeHours.toLocaleString()}h</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-blue-600 text-right font-bold bg-blue-50/20 group-hover:bg-blue-50/50">{dept.averageOvertimeHours.toLocaleString()}h</td>
                 </tr>
               ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      {/* 個人別詳細テーブル */}
+      <div className="bg-white rounded-lg border border-gray-200 overflow-hidden shadow-sm">
+        <div className="px-6 py-4 border-b border-gray-200 bg-gray-50/50 flex items-center justify-between">
+          <h3 className="text-sm font-bold text-gray-900 uppercase tracking-widest flex items-center gap-2">
+            <span className="w-2 h-2 bg-indigo-500 rounded-full"></span>
+            INDIVIDUAL PERFORMANCE DETAILS
+          </h3>
+        </div>
+        <div className="overflow-x-auto">
+          <table className="w-full">
+            <thead className="bg-gray-50">
+              <tr>
+                <th className="px-6 py-4 text-left text-[10px] font-bold text-gray-500 uppercase tracking-widest">社員ID / 氏名</th>
+                <th className="px-6 py-4 text-left text-[10px] font-bold text-gray-500 uppercase tracking-widest">部署</th>
+                <th className="px-6 py-4 text-right text-[10px] font-bold text-gray-500 uppercase tracking-widest">稼働日数</th>
+                <th className="px-6 py-4 text-right text-[10px] font-bold text-gray-500 uppercase tracking-widest">総労働時間</th>
+                <th className="px-6 py-4 text-right text-[10px] font-bold text-gray-500 uppercase tracking-widest">総残業時間</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-gray-100">
+              {employeeSummaries
+                .sort((a, b) => b.totalOvertimeHours - a.totalOvertimeHours)
+                .map((emp, index) => (
+                  <tr key={index} className="hover:bg-indigo-50/30 transition-colors group">
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <div className="flex flex-col">
+                        <span className="text-[10px] text-gray-400 font-bold mb-0.5">{emp.employeeId}</span>
+                        <span className="text-sm font-bold text-gray-900">{emp.employeeName}</span>
+                      </div>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <span className="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-gray-100 text-gray-800 uppercase tracking-tighter">
+                        {emp.department}
+                      </span>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600 text-right font-medium">{emp.workingDays}日</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-right font-medium">{emp.totalWorkingHours.toLocaleString()}h</td>
+                    <td className={`px-6 py-4 whitespace-nowrap text-sm text-right font-black ${emp.totalOvertimeHours > 45 ? 'text-red-600 bg-red-50/30' : 'text-gray-900 group-hover:bg-indigo-50/50'
+                      }`}>
+                      {emp.totalOvertimeHours.toLocaleString()}h
+                    </td>
+                  </tr>
+                ))}
             </tbody>
           </table>
         </div>

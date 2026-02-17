@@ -219,16 +219,26 @@ export function parseExcelFile(fileBuffer: ArrayBuffer): AttendanceRecord[] {
   return records;
 }
 
-// 勤怠データをCSV形式に変換（Claude APIに送信用）
+// 勤怠データをCSV形式に変換（AIへの送信用）
 export function convertToCSV(records: AttendanceRecord[]): string {
   const headers = ['社員ID', '氏名', '部署', '日付', '出勤時刻', '退勤時刻', '休憩分', '残業時間'];
+
+  // 値にカンマが含まれる場合に対応するため、ダブルクォーテーションで囲む
+  const escapeCSV = (val: any) => {
+    const s = String(val || '');
+    if (s.includes(',') || s.includes('"') || s.includes('\n')) {
+      return `"${s.replace(/"/g, '""')}"`;
+    }
+    return s;
+  };
+
   const rows = records.map(r => [
-    r.employeeId,
-    r.employeeName,
-    r.department,
-    r.date,
-    r.checkIn,
-    r.checkOut,
+    escapeCSV(r.employeeId),
+    escapeCSV(r.employeeName),
+    escapeCSV(r.department),
+    escapeCSV(r.date),
+    escapeCSV(r.checkIn),
+    escapeCSV(r.checkOut),
     r.breakMinutes,
     r.overtimeHours,
   ]);
