@@ -64,7 +64,7 @@ export default function AIReport({ report }: AIReportProps) {
         <div className="mt-8 pt-6 border-t border-blue-200 flex items-center justify-between text-[10px] text-blue-800 font-bold uppercase tracking-widest opacity-60">
           <div className="flex items-center gap-2">
             <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
-            <span>Engine: Google Gemini 1.5 Flash</span>
+            <span>Engine: Google Gemini 3 Flash</span>
           </div>
           <span>Security Certified Analysis Process</span>
         </div>
