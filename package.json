@@ -1,7 +1,7 @@
 {
-  "name": "earthbrain-attendance-dashboard",
+  "name": "ai-attendance-dashboard",
   "version": "1.0.0",
-  "description": "勤怠データ自動集計AIダッシュボード - EARTHBRAIN ES部門向けMVP",
+  "description": "勤怠データ自動集計AIダッシュボード - AI活用による人事業務自動化デモ",
   "private": true,
   "scripts": {
     "dev": "next dev",

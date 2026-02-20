@@ -52,7 +52,7 @@ export default function Home() {
                 勤怠データ自動集計ダッシュボード
               </h1>
               <p className="text-sm text-gray-600 mt-1">
-                EARTHBRAIN エンプロイーサクセス部門向けデモ
+                AI活用による人事業務自動化デモ
               </p>
             </div>
           </div>
@@ -201,7 +201,7 @@ export default function Home() {
       <footer className="mt-16 bg-white border-t border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <p className="text-center text-sm text-gray-500">
-            Powered by Google Gemini 3 Flash | Developed by 小清水晶 for EARTHBRAIN Interview
+            Powered by Google Gemini 3 Flash | Portfolio by 小清水晶
           </p>
         </div>
       </footer>

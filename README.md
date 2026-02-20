@@ -1,12 +1,12 @@
 # 勤怠データ自動集計AIダッシュボード
 
-**EARTHBRAIN エンプロイーサクセス部門向けMVP**
+**AI活用による人事業務の自動化デモアプリケーション**
 
-Claude AIを活用した勤怠データの自動エラー検知・集計・レポート生成システム
+Google Gemini APIを活用した勤怠データの自動エラー検知・集計・レポート生成システム
 
 ## 🎯 このプロジェクトについて
 
-このダッシュボードは、EARTHBRAIN ES部門の勤怠データ集計業務を自動化・効率化するために開発されたデモシステムです。
+このダッシュボードは、企業の人事部門における勤怠データ集計業務を自動化・効率化するために開発されたデモシステムです。
 
 ### 解決する課題
 
@@ -18,7 +18,7 @@ Claude AIを活用した勤怠データの自動エラー検知・集計・レ�
 ### 主な機能
 
 1. **Excelファイルのドラッグ&ドロップアップロード**
-2. **Claude AIによる高精度エラー検知**
+2. **Google Gemini AIによる高精度エラー検知**
    - 欠損データ（出勤/退勤時刻の空白）
    - 論理矛盾（退勤時刻 < 出勤時刻）
    - 異常値（残業時間100時間超）
@@ -42,14 +42,14 @@ Claude AIを活用した勤怠データの自動エラー検知・集計・レ�
 
 - Node.js 18以上
 - npm または yarn
-- Anthropic API Key（[こちら](https://console.anthropic.com/)から取得）
+- Google Gemini API Key（[こちら](https://aistudio.google.com/apikey)から取得）
 
 ### 2. インストール
 
 ```bash
 # リポジトリをクローン
 git clone <repository-url>
-cd earthbrain-attendance-dashboard
+cd attendance-dashboard
 
 # 依存関係をインストール
 npm install
@@ -62,7 +62,7 @@ npm install
 cp .env.example .env.local
 
 # .env.local を編集してAPIキーを設定
-ANTHROPIC_API_KEY=sk-ant-your-api-key-here
+GEMINI_API_KEY=your-api-key-here
 ```
 
 ### 4. 開発サーバーの起動
@@ -98,7 +98,7 @@ npm run dev
 ## 📂 プロジェクト構造
 
 ```
-earthbrain-attendance-dashboard/
+attendance-dashboard/
 ├── app/
 │   ├── api/
 │   │   └── analyze/
@@ -112,7 +112,7 @@ earthbrain-attendance-dashboard/
 │   ├── ErrorList.tsx             # エラーリスト表示
 │   └── FileUpload.tsx            # ファイルアップロード
 ├── lib/
-│   ├── claude-client.ts          # Claude API連携
+│   ├── gemini-client.ts          # Google Gemini API連携
 │   ├── excel-parser.ts           # Excel解析・集計ロジック
 │   └── types.ts                  # TypeScript型定義
 ├── public/
@@ -164,15 +164,15 @@ node scripts/generate-sample-data.js
 
 ## 🔧 技術スタック
 
-| カテゴリ           | 技術                          |
-| ------------------ | ----------------------------- |
-| フロントエンド     | React 18 + TypeScript         |
-| フレームワーク     | Next.js 14 (App Router)       |
-| スタイリング       | Tailwind CSS 3                |
-| グラフ可視化       | Recharts 2                    |
-| AI                 | Claude Sonnet 4.5 (Anthropic) |
-| Excelファイル処理  | xlsx                          |
-| デプロイ           | Vercel                        |
+| カテゴリ           | 技術                            |
+| ------------------ | ------------------------------- |
+| フロントエンド     | React 18 + TypeScript           |
+| フレームワーク     | Next.js 14 (App Router)         |
+| スタイリング       | Tailwind CSS 3                  |
+| グラフ可視化       | Recharts 2                      |
+| AI                 | Google Gemini 3 Flash           |
+| Excelファイル処理  | xlsx                            |
+| デプロイ           | Vercel                          |
 
 ---
 
@@ -188,7 +188,7 @@ node scripts/generate-sample-data.js
 # GitHubにプッシュ
 git init
 git add .
-git commit -m "Initial commit: EARTHBRAIN勤怠ダッシュボード"
+git commit -m "Initial commit: AI-powered attendance dashboard"
 git remote add origin <your-github-repo-url>
 git push -u origin main
 ```
@@ -199,42 +199,12 @@ git push -u origin main
 2. GitHubリポジトリを選択
 3. Framework Preset: **Next.js** を選択
 4. 環境変数を設定:
-   - `ANTHROPIC_API_KEY`: Anthropic API Key
+   - `GEMINI_API_KEY`: Google Gemini API Key
 5. 「Deploy」をクリック
 
 ### 4. デプロイ完了
 
-数分でデプロイが完了し、URLが発行されます（例: `https://earthbrain-attendance-dashboard.vercel.app`）
-
----
-
-## 🎤 面接でのデモスクリプト
-
-### シナリオ（30秒デモ）
-
-1. **導入**（5秒）
-   「実は、御社のES部門向けにデモシステムを作ってきました」
-
-2. **デモURL共有**（5秒）
-   画面共有で `https://earthbrain-attendance-dashboard.vercel.app` を表示
-
-3. **ファイルアップロード**（5秒）
-   `attendances_sample.xlsx` をドラッグ&ドロップ
-
-4. **AI解析**（3秒）
-   「AIがデータを解析中...」と表示
-
-5. **結果表示**（7秒）
-   - エラー検知結果: 「6件のエラーを検出」
-   - ダッシュボード: グラフとKPIカードが表示
-   - AIレポート: 自然言語の月次レポートが表示
-
-6. **クロージング**（5秒）
-   「これ、明日から使えます。ソースコードはGitHubで公開しています」
-
-### 期待される反応
-
-> 「...これ、本当に一人で作ったの？入社初日から使えるレベルだ。」
+数分でデプロイが完了し、URLが発行されます
 
 ---
 
@@ -258,21 +228,14 @@ git push -u origin main
 **小清水晶**
 
 - **職歴**: BATジャパン（380万円コスト削減提案実績）
-- **スキル**: React Native / TypeScript / Claude Code / Lovable / Bolt AI
-- **専門**: プロンプトエンジニアリング / AI高速開発
-- **応募先**: 株式会社EARTHBRAIN エンプロイーサクセス部門
+- **スキル**: React Native / TypeScript / Claude Code / AI開発ツール
+- **専門**: プロンプトエンジニアリング / フルスタック開発
 
 ---
 
-## 🙏 Acknowledgments
+## 🙏 技術スタック
 
-- **Claude Sonnet 4.5** by Anthropic - AI解析・レポート生成
+- **Google Gemini 3 Flash** - AI解析・レポート生成
 - **Next.js** - フレームワーク
 - **Recharts** - グラフ可視化
 - **Tailwind CSS** - UIデザイン
-
----
-
-## 📧 お問い合わせ
-
-面接担当者の方へ: このシステムに関するご質問は面接時にお気軽にお声がけください。

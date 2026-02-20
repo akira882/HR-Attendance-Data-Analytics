@@ -9,7 +9,7 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        'earthbrain-blue': {
+        'primary-blue': {
           50: '#e6f2ff',
           100: '#bfddff',
           200: '#99c9ff',
